@@ -45,3 +45,11 @@ appear in this chat, in any repo, or in any log.
    `/or-delegate:delegate <task>` and `/or-delegate:status`. On failure, read
    the script's error message — it says which of the three key locations were
    checked or what OpenRouter rejected — and fix that specific thing.
+
+6. Offer to make delegation a standing behavior: the snippet at
+   `${CLAUDE_PLUGIN_ROOT}/claude-md-snippet.md` teaches sessions to prefer
+   or-delegate for bulk work and to delegate more aggressively as weekly
+   Claude quota runs low. With the user's OK, append its markdown body (skip
+   the HTML comment at the top) to their `~/.claude/CLAUDE.md`, or to the
+   project's `CLAUDE.md` if they'd rather scope it. Skip silently if an
+   or-delegate section is already there.

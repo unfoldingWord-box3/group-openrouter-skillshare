@@ -36,6 +36,14 @@ There is also an optional `drafter` agent (runs on Haiku) that orchestrates
 big fully-specified drafting jobs: cheap Claude driving, OpenRouter
 generating.
 
+## Make it a standing behavior (CLAUDE.md)
+
+The plugin works out of the box, but sessions use it more reliably — and
+scale up delegation as your weekly Claude quota runs low — if you add the
+ready-made section in [claude-md-snippet.md](claude-md-snippet.md) to your
+`~/.claude/CLAUDE.md`. `/or-delegate:setup` offers to append it for you at
+the end of setup.
+
 ## Key resolution and storage
 
 `scripts/delegate.sh` looks for a key in this order:
