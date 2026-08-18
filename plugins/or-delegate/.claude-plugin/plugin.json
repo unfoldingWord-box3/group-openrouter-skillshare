@@ -1,0 +1,12 @@
+{
+  "name": "or-delegate",
+  "displayName": "OpenRouter Delegate",
+  "version": "0.1.0",
+  "description": "Delegate bulk generation and bulk reading to cheap OpenRouter models so the Claude subscription is spent on judgment, not typing.",
+  "author": {
+    "name": "unfoldingWord"
+  },
+  "repository": "https://github.com/unfoldingWord-box3/group-openrouter-skillshare",
+  "license": "MIT",
+  "keywords": ["openrouter", "delegation", "cost-control"]
+}
