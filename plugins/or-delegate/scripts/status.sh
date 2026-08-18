@@ -11,7 +11,7 @@ if [ ! -s "$LOG" ]; then
   exit 0
 fi
 
-jq -rs '
+jq -rnR '
   def money: (. * 1000000 | round) as $u
     | "$\($u / 1000000 | floor).\(($u % 1000000 + 1000000) | tostring | .[1:])";
   def table:
@@ -19,8 +19,15 @@ jq -rs '
      | map("  \(.[0].model)  calls=\(length)  tokens_in=\(map(.tokens_in) | add)  tokens_out=\(map(.tokens_out) | add)  cost=\(map(.cost) | add | money)")
      | .[]),
     "  total: \(map(.cost) | add | money) across \(length) calls";
-  (now | strftime("%Y-%m-%d")) as $today
-  | map(select(.ts and .model))
+  # fromjson? skips corrupt lines; tonumber? // 0 tolerates missing or
+  # non-numeric fields, so one bad line never kills the whole report.
+  [inputs | fromjson? // empty
+   | select((.ts | type) == "string" and (.model | type) == "string")
+   | {ts, model,
+      tokens_in: ((.tokens_in | tonumber?) // 0),
+      tokens_out: ((.tokens_out | tonumber?) // 0),
+      cost: ((.cost | tonumber?) // 0)}]
+  | (now | strftime("%Y-%m-%d")) as $today
   | (map(select(.ts | startswith($today)))) as $day
   | (map(select(((.ts | fromdateiso8601?) // 0) >= (now - 7 * 86400)))) as $week
   | "Today (\($today) UTC):",

@@ -5,10 +5,11 @@ disable-model-invocation: true
 allowed-tools: Bash(${CLAUDE_PLUGIN_ROOT}/scripts/status.sh)
 ---
 
-Run:
+Run exactly (unquoted, no extra arguments, so it matches the pre-approved
+permission rule):
 
 ```
-"${CLAUDE_PLUGIN_ROOT}/scripts/status.sh"
+${CLAUDE_PLUGIN_ROOT}/scripts/status.sh
 ```
 
 Show the user its output as-is (it is already grouped by model for today and

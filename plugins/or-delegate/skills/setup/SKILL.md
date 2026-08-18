@@ -17,23 +17,27 @@ appear in this chat, in any repo, or in any log.
    create an API key (it starts with `sk-or-`).
 
 3. Have the user store the key themselves. Do not ask them to paste the key
-   into the chat; instead give them this command to run in their own terminal,
-   substituting their key:
+   into the chat, and don't have them put it on a command line either (it
+   would land in shell history). Give them this command to run in their own
+   terminal — it prompts silently for the key, so nothing sensitive is typed
+   into history:
 
    ```bash
-   mkdir -p ~/.config/or-delegate && printf '%s' 'sk-or-PASTE-KEY-HERE' > ~/.config/or-delegate/key && chmod 600 ~/.config/or-delegate/key
+   mkdir -p ~/.config/or-delegate && read -rsp "OpenRouter key: " k && printf '%s' "$k" > ~/.config/or-delegate/key && chmod 600 ~/.config/or-delegate/key && unset k && echo " stored"
    ```
 
    Alternatives, if they prefer: export `OPENROUTER_API_KEY` in their shell
    profile, or — for hosted cloud sessions where the home directory doesn't
-   persist — put `OPENROUTER_API_KEY=sk-or-...` in a git-ignored `.dev.vars`
-   file in the project, or use the org's managed environment settings.
+   persist — put `OPENROUTER_API_KEY=sk-or-...` in a `.dev.vars` file in the
+   project, or use the org's managed environment settings. If they choose
+   `.dev.vars`, first confirm the project's `.gitignore` actually ignores
+   `.dev.vars` (add the line if missing) so the key can never be committed.
 
 4. Once they say it's stored, verify with a real test call to the cheapest
    menu model:
 
    ```
-   "${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh" --model google/gemini-2.5-flash-lite "Reply with exactly: or-delegate is working"
+   ${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh --model google/gemini-2.5-flash-lite "Reply with exactly: or-delegate is working"
    ```
 
 5. On success, show the cost stats the script printed (the test costs a tiny

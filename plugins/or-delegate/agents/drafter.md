@@ -14,7 +14,7 @@ For each drafting task you receive:
    and delegation rules.
 2. Gather exactly the context the external model needs (it cannot see the
    repo) and build one self-contained prompt.
-3. Run `"${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh" --model <menu-id> --out <file> "<prompt>"`.
+3. Run `${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh --model <menu-id> --out <file> "<prompt>"` (path unquoted, script first in the command).
 4. Review the file: does it match the spec, compile/parse plausibly, follow
    the surrounding code's style? Fix small problems with targeted edits. If
    the result is fundamentally wrong, retry once with a sharper prompt or the

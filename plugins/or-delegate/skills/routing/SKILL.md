@@ -14,8 +14,12 @@ billing. So: Claude decides and reviews; a cheap model types.
 The tool is one script:
 
 ```
-"${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh" --model <id> [--out <file>] [--system <text>] "<prompt>"
+${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh --model <id> [--out <file>] [--system <text>] "<prompt>"
 ```
+
+Invoke it exactly like that — path unquoted, script first in the command (use
+`< file` redirection rather than piping `cat` into it) — so the call matches
+this skill's pre-approved permission rule and runs without prompting.
 
 It reads the user's own OpenRouter key (env var, `~/.config/or-delegate/key`,
 or `./.dev.vars`) and logs every call to `~/.claude/or-delegate/usage.jsonl`.
@@ -56,10 +60,12 @@ When a file or log is longer than ~500 lines and you only need comprehension
 (what does it do, where is the error, what changed), don't read it raw:
 
 ```
-cat big.log | "${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh" --model deepseek/deepseek-v4-flash \
-  --system "Summarize for a developer. Preserve exact error messages, line numbers, and identifiers." \
-  "Summarize this log and list every distinct error with its first occurrence."
+${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh --model deepseek/deepseek-v4-flash \
+  "Summarize this log for a developer. Preserve exact error messages, line numbers, and identifiers; list every distinct error with its first occurrence." < big.log
 ```
+
+The prompt argument carries the instruction and stdin carries the material;
+the script concatenates them (instruction first).
 
 Read the summary; open the raw file only for the specific regions the summary
 points at.
