@@ -1,0 +1,4 @@
+# Secrets and per-user state must never land in this repo.
+.dev.vars
+*.key
+usage.jsonl

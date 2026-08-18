@@ -1,0 +1,14 @@
+{
+  "name": "uw-skillshare",
+  "owner": {
+    "name": "unfoldingWord"
+  },
+  "description": "unfoldingWord's shared Claude Code plugins: OpenRouter delegation and team skills.",
+  "plugins": [
+    {
+      "name": "or-delegate",
+      "source": "./plugins/or-delegate",
+      "description": "Delegate bulk generation and bulk reading to cheap OpenRouter models so the Claude subscription is spent on judgment, not typing."
+    }
+  ]
+}

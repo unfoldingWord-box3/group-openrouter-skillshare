@@ -1,0 +1,43 @@
+---
+name: setup
+description: Set up an OpenRouter API key for the or-delegate plugin and verify it with a test call
+disable-model-invocation: true
+allowed-tools: Bash(${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh *)
+---
+
+Walk the user through connecting their own OpenRouter key. The key must never
+appear in this chat, in any repo, or in any log.
+
+1. Check prerequisites: `curl` and `jq` must be installed (`command -v curl jq`).
+   If either is missing, give the install command for the user's platform and
+   stop until it's installed.
+
+2. Point the user at https://openrouter.ai/settings/keys — they sign up (any
+   login works), add a few dollars of credit or set a spending limit, and
+   create an API key (it starts with `sk-or-`).
+
+3. Have the user store the key themselves. Do not ask them to paste the key
+   into the chat; instead give them this command to run in their own terminal,
+   substituting their key:
+
+   ```bash
+   mkdir -p ~/.config/or-delegate && printf '%s' 'sk-or-PASTE-KEY-HERE' > ~/.config/or-delegate/key && chmod 600 ~/.config/or-delegate/key
+   ```
+
+   Alternatives, if they prefer: export `OPENROUTER_API_KEY` in their shell
+   profile, or — for hosted cloud sessions where the home directory doesn't
+   persist — put `OPENROUTER_API_KEY=sk-or-...` in a git-ignored `.dev.vars`
+   file in the project, or use the org's managed environment settings.
+
+4. Once they say it's stored, verify with a real test call to the cheapest
+   menu model:
+
+   ```
+   "${CLAUDE_PLUGIN_ROOT}/scripts/delegate.sh" --model google/gemini-2.5-flash-lite "Reply with exactly: or-delegate is working"
+   ```
+
+5. On success, show the cost stats the script printed (the test costs a tiny
+   fraction of a cent) and tell them the two commands they'll actually use:
+   `/or-delegate:delegate <task>` and `/or-delegate:status`. On failure, read
+   the script's error message — it says which of the three key locations were
+   checked or what OpenRouter rejected — and fix that specific thing.
